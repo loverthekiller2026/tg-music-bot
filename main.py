@@ -275,7 +275,7 @@ async def main() -> None:
     await runner.setup()
     site = web.TCPSite(runner, "0.0.0.0", 7860)
     await site.start()
-    log.info("Dummy web server started on port 7860 ✓")
+    log.info("Dummy web server started on port 10000 ✓")
 
     # ── Keep alive ──
     try:
