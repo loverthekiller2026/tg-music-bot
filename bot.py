@@ -41,7 +41,7 @@ def register_handlers(
         
         caption = (
             f"Hey {message.from_user.first_name if message.from_user else 'there'},\n"
-            f"This is **GlissStream** !\n\n"
+            f"This is Music Player !\n\n"
             f"A music player bot with some awesome and useful features.\n\n"
             f"Click on the help button for more info."
         )
@@ -49,11 +49,11 @@ def register_handlers(
         reply_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton("Add me to your group", url=f"https://t.me/{bot_username}?startgroup=true")],
             [InlineKeyboardButton("Help", callback_data="cb_help")],
-            [InlineKeyboardButton("Support", url="https://t.me/Ri5h11"), InlineKeyboardButton("Source", url="https://github.com/")],
+            [InlineKeyboardButton("Support", url="https://t.me/KURUK_SHE_TRA"), InlineKeyboardButton("Source", url="https://github.com/")],
         ])
         
         await message.reply_photo(
-            photo="catfortg.jpeg",
+            photo="kurukshethra.jpg",
             caption=caption,
             reply_markup=reply_markup
         )
@@ -82,7 +82,7 @@ def register_handlers(
         
         caption = (
             f"Hey {message.from_user.first_name if message.from_user else 'there'},\n"
-            f"This is **GlissStream** !\n\n"
+            f"This is Music Player !\n\n"
             f"A music player bot with some awesome and useful features.\n\n"
             f"_Click on the help button for more info._"
         )
@@ -90,11 +90,11 @@ def register_handlers(
         reply_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton("Add me to your group", url=f"https://t.me/{bot_username}?startgroup=true")],
             [InlineKeyboardButton("Help", callback_data="cb_help")],
-            [InlineKeyboardButton("Support", url="https://t.me/Ri5h11"), InlineKeyboardButton("Source", url="https://github.com/")],
+            [InlineKeyboardButton("Support", url="https://t.me/KURUK_SHE_TRA"), InlineKeyboardButton("Source", url="https://github.com/")],
         ])
         
         await message.reply_photo(
-            photo="catfortg.jpeg",
+            photo="kurukshethra.jpg",
             caption=caption,
             reply_markup=reply_markup
         )
@@ -117,17 +117,17 @@ def register_handlers(
             )
             return
 
-        status_msg = await message.reply_text("Searching...", quote=True)
-
+      #  status_msg = await message.reply_text("Searching...", quote=True)
+                     
         # Extract stream info
         info = await YouTubeExtractor.extract_info(query, video=video)
-        if not info:
-            from pyrogram.errors import MessageNotModified
-            try:
-                await status_msg.edit_text("No results found. Please try a different query.")
-            except MessageNotModified:
-                pass
-            return
+       # if not info:
+       #     from pyrogram.errors import MessageNotModified
+        #    try:
+        #        await status_msg.edit_text("No results found. Please try a different query.")
+        #    except MessageNotModified:
+        #        pass
+        #    return
 
         track = {
             "title": info["title"],
@@ -153,20 +153,20 @@ def register_handlers(
                     audio_url=track.get("audio_url", ""),
                     video=video
                 )
-                await status_msg.edit_text(
-                    build_now_playing(track, video=video),
-                    reply_markup=get_now_playing_markup(is_paused=False),
-                )
+           #     await status_msg.edit_text(
+           #         build_now_playing(track, video=video),
+           #         reply_markup=get_now_playing_markup(is_paused=False),
+           #     )
             except Exception as exc:
                 queue.full_clear(chat_id)
                 log.error("Play failed: %s", exc)
-                await status_msg.edit_text(
-                    "Playback failed. Make sure a voice chat is active "
-                    "and the userbot has permission to join."
-                )
+           #     await status_msg.edit_text(
+           #         "Playback failed. Make sure a voice chat is active "
+           #         "and the userbot has permission to join."
+           #     )
         else:
             position = queue.add(chat_id, track)
-            await status_msg.edit_text(build_queued_message(track, position))
+           # await status_msg.edit_text(build_queued_message(track, position))
 
     @bot.on_message(filters.command("play") & filters.group)
     async def cmd_play(client: Client, message: Message):
@@ -195,11 +195,11 @@ def register_handlers(
                     audio_url=next_track.get("audio_url", ""),
                     video=video
                 )
-                await message.reply_text(
-                    build_now_playing(next_track, video=video),
-                    reply_markup=get_now_playing_markup(is_paused=False),
-                    quote=True,
-                )
+             #   await message.reply_text(
+             #       build_now_playing(next_track, video=video),
+             #       reply_markup=get_now_playing_markup(is_paused=False),
+             #       quote=True,
+             #   )
             except Exception as exc:
                 log.error("Skip-play failed: %s", exc)
                 await message.reply_text("Failed to play the next track.", quote=True)
@@ -207,7 +207,7 @@ def register_handlers(
             await stream.stop(chat_id)
             queue.full_clear(chat_id)
             await message.reply_text("Skipped. The queue is now empty. Left the voice chat.", quote=True)
-
+            await message.delete()
     # ── /stop ───────────────────────────────────────────────────
     @bot.on_message(filters.command("stop") & filters.group)
     async def cmd_stop(client: Client, message: Message):
@@ -215,7 +215,7 @@ def register_handlers(
         await stream.stop(chat_id)
         queue.full_clear(chat_id)
         await message.reply_text("Stopped playback and left the voice chat.", quote=True)
-
+        await message.delete()
     # ── /pause ──────────────────────────────────────────────────
     @bot.on_message(filters.command("pause") & filters.group)
     async def cmd_pause(client: Client, message: Message):
@@ -224,7 +224,7 @@ def register_handlers(
             await message.reply_text("Playback paused.", quote=True)
         else:
             await message.reply_text("There is nothing playing to pause.", quote=True)
-
+            await message.delete()
     # ── /resume ─────────────────────────────────────────────────
     @bot.on_message(filters.command("resume") & filters.group)
     async def cmd_resume(client: Client, message: Message):
@@ -233,7 +233,7 @@ def register_handlers(
             await message.reply_text("Playback resumed.", quote=True)
         else:
             await message.reply_text("There is nothing to resume.", quote=True)
-
+            await message.delete()
     # ── /queue ──────────────────────────────────────────────────
     @bot.on_message(filters.command("queue") & filters.group)
     async def cmd_queue(client: Client, message: Message):
@@ -244,6 +244,7 @@ def register_handlers(
 
         if not current and not upcoming:
             await message.reply_text("The queue is currently empty.", quote=True)
+            await message.delete()
             return
 
         text = build_queue_message(upcoming, current, loop_mode, Config.MAX_QUEUE_DISPLAY)
@@ -282,7 +283,7 @@ def register_handlers(
         await message.reply_text(
             f"Loop mode set to: **{labels.get(mode.value, 'Off')}**", quote=True
         )
-
+        await message.delete()
     # ── /shuffle ────────────────────────────────────────────────
     @bot.on_message(filters.command("shuffle") & filters.group)
     async def cmd_shuffle(client: Client, message: Message):
@@ -292,13 +293,13 @@ def register_handlers(
             return
         queue.shuffle(chat_id)
         await message.reply_text("Queue shuffled.", quote=True)
-
+        await message.delete()
     # ── /clear ──────────────────────────────────────────────────
     @bot.on_message(filters.command("clear") & filters.group)
     async def cmd_clear(client: Client, message: Message):
         queue.clear(message.chat.id)
         await message.reply_text("Upcoming queue cleared. The current track will continue playing.", quote=True)
-
+        await message.delete()
     # ── Inline Callbacks ────────────────────────────────────────
     @bot.on_callback_query(filters.regex(r"^cb_"))
     async def handle_callbacks(client: Client, callback_query):
@@ -320,14 +321,14 @@ def register_handlers(
             bot_username = bot_me.username
             caption = (
                 f"Hey {callback_query.from_user.first_name if callback_query.from_user else 'there'},\n"
-                f"This is **GlissStream** !\n\n"
+                f"This is Music Player !\n\n"
                 f"A music player bot with some awesome and useful features.\n\n"
                 f"_Click on the help button for more info._"
             )
             reply_markup = InlineKeyboardMarkup([
                 [InlineKeyboardButton("Add me to your group", url=f"https://t.me/{bot_username}?startgroup=true")],
                 [InlineKeyboardButton("Help", callback_data="cb_help")],
-                [InlineKeyboardButton("Support", url="https://t.me/Ri5h11"), InlineKeyboardButton("Source", url="https://github.com/")],
+                [InlineKeyboardButton("Support", url="https://t.me/KURUK_SHE_TRA"), InlineKeyboardButton("Source", url="https://github.com/")],
             ])
             await callback_query.edit_message_caption(
                 caption=caption,
