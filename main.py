@@ -134,10 +134,8 @@ def _setup_pot_server() -> None:
             subprocess.run(["git", "clone", "--single-branch", "--branch", "1.3.1", repo_url, repo_dir], check=True)
             log.info("Installing dependencies for PO Token provider...")
             subprocess.run(["npm", "ci", "--include=dev"], cwd=server_dir, check=True)
-            log.info("Installing typescript compiler...")
-            subprocess.run(["npm", "install", "typescript"], cwd=server_dir, check=True)
             log.info("Building PO Token provider...")
-            subprocess.run(["npx", "--yes", "tsc"], cwd=server_dir, check=True)
+            subprocess.run(["npx", "tsc"], cwd=server_dir, check=True)
         except Exception as e:
             log.error(f"Failed to setup PO Token provider: {e}")
             return
@@ -273,9 +271,10 @@ async def main() -> None:
     web_app.router.add_get("/", handle_ping)
     runner = web.AppRunner(web_app)
     await runner.setup()
-    site = web.TCPSite(runner, "0.0.0.0", 7860)
+    port = int(os.environ.get("PORT", "10000"))
+    site = web.TCPSite(runner, "0.0.0.0", port)
     await site.start()
-    log.info("Dummy web server started on port 10000 ✓")
+    log.info("Dummy web server started on port %d ✓", port)
 
     # ── Keep alive ──
     try:
