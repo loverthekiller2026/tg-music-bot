@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: Tg-Music-Bot
+    runtime: python
+    plan: free
+
+    buildCommand: "pip3 install --no-cache-dir --upgrade --requirement requirements.txt"
+    startCommand: "python main.py"
+
+    envVars:
+      - key: API_ID
+        sync: false
+
+      - key: API_HASH
+        sync: false
+
+      - key: BOT_TOKEN
+        sync: false
+
+      - key: SESSION_STRING
+        sync: false
+
+      - key: SUDO_USERS
+        sync: false
+
+      - key: PYTHON_VERSION
+        value: "3.11.4"
+
+      - key: PORT
+        value: "10000"
+
+
+API_ID=12345678
+API_HASH=your_api_hash_here
+BOT_TOKEN=123456:ABC-DEF1234...
+SESSION_STRING=your_session_string_here
+SUDO_USERS=123456789
