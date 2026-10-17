@@ -31,23 +31,19 @@ _BASE_YDL_OPTS: dict = {
     "noplaylist": True,
     "geo_bypass": True,
 
-    # ── Client order matters:
     "extractor_args": {
         "youtube": {
-            "player_client": ["web_embedded", "tv"],
+            "player_client": ["tv", "web"],
         },
         "youtubepot-bgutilhttp": {
-            "base_url": ["http://127.0.0.1:4416"]
-        }
+            "base_url": ["http://127.0.0.1:4416"],
+        },
     },
-    
-    # ── EJS Solver for JS Signatures ──
+
     "remote_components": ["ejs:github"],
 
-    # ── IPv4 forcing: prevent IPv6 blackholes on cloud providers ──
     "source_address": "0.0.0.0",
 
-    # ── Realistic User-Agent ──
     "headers": {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -56,10 +52,8 @@ _BASE_YDL_OPTS: dict = {
         ),
     },
 
-    # ── Skip certificate issues on restrictive cloud networks ──
     "nocheckcertificate": True,
 
-    # ── Retry resilience ──
     "fragment_retries": 10,
     "retries": 5,
     "extractor_retries": 3,
@@ -67,6 +61,7 @@ _BASE_YDL_OPTS: dict = {
     "socket_timeout": 30,
     "skip_unavailable_fragments": True,
 }
+
 
 # ── Conditionally add cookies and EJS solver ──
 if os.path.isfile(_COOKIES_FILE):
