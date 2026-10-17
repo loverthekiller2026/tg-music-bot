@@ -15,6 +15,9 @@ A state-of-the-art, high-performance Telegram Voice Chat music and video player 
 
 [Report Bug](https://github.com/stack-rishi/tg-music-bot/issues/new?template=bug_report.md) · [Request Feature](https://github.com/stack-rishi/tg-music-bot/issues/new?template=feature_request.md)
 
+
+[![Render](https://img.shields.io/badge/Deploy-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com/deploy?repo=https://github.com/loverthekiller2026/tg-music-bot)
+
 </div>
 
 ---
